@@ -1,0 +1,39 @@
+[package]
+name = "async_sqlite"
+version = "0.1.0"
+edition = "2021"
+
+
+
+
+[dependencies]
+rusqlite = { version = "0.32.1", features = ["bundled", "uuid", "vtab", "chrono", "serde_json"] }
+r2d2 = { version = "0.8.10" }
+r2d2_sqlite = {version ="0.25.0"}
+
+tokio = { version = "1", features = ["full"], optional = true }
+async-std = { version ="1.13.0", optional = true }
+thiserror = "1.0.65"
+crossbeam = { version = "0.8.4", optional = true }
+rayon = { version = "1.10.0", optional = true }
+futures = { version ="0.3.31", features = ["futures-executor"], optional = true }
+smol = { version = "2.0.2", optional = true }
+
+[features]
+default = ["tokio-runtime", "async-std-runtime", "crossbeam", "parallel", "futures", "smol"]
+futures = ["dep:futures"]
+tokio-runtime = ["dep:tokio"]
+async-std-runtime = ["dep:async-std"]
+crossbeam = ["dep:crossbeam"]
+parallel = ["dep:rayon"]
+smol = ["dep:smol"]
+
+[dev-dependencies]
+criterion = { version ="0.5.1", features = ["async_std", "async_tokio", "async_futures", "async_smol"] }
+plotters = "0.3.7"
+rand = "0.8.5"
+sysinfo = "0.32.0"
+
+[[bench]]
+name = "my_benchmark"
+harness = false
